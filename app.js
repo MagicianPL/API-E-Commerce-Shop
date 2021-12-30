@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const data = require("./data.js");
 require("dotenv").config();
 const userRouter = require("./routers/userRouter");
@@ -23,6 +24,7 @@ mongoose
 
 //middleware
 app.use(cors());
+app.use(bodyParser.json());
 
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
