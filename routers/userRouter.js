@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const data = require("../data");
+const generateToken = require("../helpers/generateToken");
 
 const userRouter = express.Router();
 
@@ -26,11 +27,11 @@ userRouter.post("/signin", async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        token: "iciifi",
+        token: generateToken(user),
       });
     }
   } else {
-    res.send({ error: "smth gone wrong" });
+    res.status(401).send({ error: "Invalid email or password" });
   }
 });
 
