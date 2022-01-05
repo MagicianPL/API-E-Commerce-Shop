@@ -20,7 +20,6 @@ userRouter.post("/signin", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (user) {
     //if password matches
-    console.log("user is true");
     if (bcrypt.compareSync(req.body.password, user.password)) {
       res.status(200).send({
         _id: user._id,
@@ -36,14 +35,26 @@ userRouter.post("/signin", async (req, res) => {
 });
 
 userRouter.post("/register", async (req, res) => {
+  //new user
   const user = new User({
     name: req.body.name,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
   });
-
-  await user.save();
-  res.send({ createdUser: user });
+  //if email already exists
+  const existingEmail = User.findOne({ email: user.email }, (err, user) => {
+    if (user) {
+      res.status(400).send({ error: "Sorry, email already exists!" });
+      return;
+    }
+  });
+  //if not
+  try {
+    await user.save();
+    res.send({ createdUser: user });
+  } catch (err) {
+    res.status(400).send({ error: "Sorry, something gone wrong" });
+  }
 });
 
 module.exports = userRouter;
