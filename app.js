@@ -7,6 +7,7 @@ const data = require("./data.js");
 require("dotenv").config();
 const userRouter = require("./routers/userRouter");
 const productRouter = require("./routers/productRouter");
+const orderRouter = require("./routers/orderRouter");
 const Product = require("./models/productModel");
 
 const port = process.env.PORT || 5000;
@@ -28,6 +29,7 @@ app.use(bodyParser.json());
 
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
+app.use("/api/orders", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("Homepage");
