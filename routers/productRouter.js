@@ -15,21 +15,28 @@ productRouter.get("/seed", async (req, res) => {
 });
 
 productRouter.get("/", async (req, res) => {
-  const products = await Product.find();
-  console.log(products);
-  res.send(products);
+  try {
+    const products = await Product.find();
+    if (products.length < 1) {
+      return res.status(404).json({ message: "Error - Nothing found" });
+    }
+    res.status(200).json(products);
+  } catch (err) {
+    console.log(err);
+    res.json({ message: err.message });
+  }
 });
 
 productRouter.get("/:id", async (req, res) => {
-  const product = await Product.findById(req.params.id);
-  console.log(req.params);
-  console.log(product);
-
-  if (product) {
-    res.send(product);
-    console.log(product);
-  } else {
-    res.status(404).send({ error: "Product not found" });
+  try {
+    const product = await Product.findById(req.params.id);
+    if (product) {
+      res.status(200).json(product);
+    } else {
+      res.status(404).json({ message: "Product not found" });
+    }
+  } catch (err) {
+    res.json({ message: err.message });
   }
 });
 
