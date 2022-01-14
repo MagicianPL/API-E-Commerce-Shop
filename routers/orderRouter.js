@@ -4,7 +4,7 @@ const userAuth = require("../helpers/userAuth");
 
 const orderRouter = express.Router();
 
-orderRouter.get("/:id", async (req, res) => {
+orderRouter.get("/:id", userAuth, async (req, res) => {
   const orderId = req.params.id;
   try {
     const order = await Order.findOne({ _id: orderId });
