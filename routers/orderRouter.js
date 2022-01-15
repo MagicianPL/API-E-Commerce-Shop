@@ -42,4 +42,20 @@ orderRouter.post("/", userAuth, async (req, res) => {
   }
 });
 
+orderRouter.patch("/pay/:id", userAuth, async (req, res) => {
+  const orderId = req.params.id;
+  try {
+    const order = await Order.findOne({ _id: orderId });
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    await order.save();
+    res.send(order);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = orderRouter;
