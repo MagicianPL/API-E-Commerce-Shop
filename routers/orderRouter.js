@@ -4,6 +4,15 @@ const userAuth = require("../helpers/userAuth");
 
 const orderRouter = express.Router();
 
+orderRouter.get("/main", userAuth, async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.body.user });
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 orderRouter.get("/:id", userAuth, async (req, res) => {
   const orderId = req.params.id;
   try {
