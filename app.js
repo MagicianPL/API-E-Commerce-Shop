@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const data = require("./data.js");
 require("dotenv").config();
 const userRouter = require("./routers/userRouter");
 const productRouter = require("./routers/productRouter");
