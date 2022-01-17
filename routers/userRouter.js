@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const data = require("../data");
 const generateToken = require("../helpers/generateToken");
+const userAuth = require("../helpers/userAuth");
 
 const userRouter = express.Router();
 
@@ -59,6 +60,19 @@ userRouter.post("/register", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.json(err.message);
+  }
+});
+
+userRouter.get("/userDetails", userAuth, async (req, res) => {
+  try {
+    const user = await User.findById(req.body.id);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
