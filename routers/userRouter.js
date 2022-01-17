@@ -63,9 +63,9 @@ userRouter.post("/register", async (req, res) => {
   }
 });
 
-userRouter.get("/userDetails", userAuth, async (req, res) => {
+userRouter.get("/:id", userAuth, async (req, res) => {
   try {
-    const user = await User.findById(req.body.id);
+    const user = await User.findById(req.params.id);
     if (user) {
       res.status(200).json(user);
     } else {
